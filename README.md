@@ -1,160 +1,336 @@
-# DevOps + AIOps Series
+# Cloud-Native DevOps & AIOps Platform on AWS EKS
 
-> A full end-to-end DevOps project with AIOps integration — so you can connect the dots between how AI is helping automate DevOps tasks today.
+## Overview
+
+This repository contains my implementation of an end-to-end DevOps and AIOps platform deployed on AWS EKS.
+
+The project demonstrates how modern cloud-native applications move from source code to production through automated CI/CD pipelines, GitOps workflows, observability tooling, centralized logging, and AI-assisted incident diagnosis.
+
+The implementation was completed as a hands-on learning project under the guidance of Vishakha Sadwani. I deployed, configured, tested, troubleshot, and documented the complete workflow in my own AWS environment to gain practical experience with modern DevOps, Cloud, Platform Engineering, and AIOps practices.
 
 ---
 
-## Welcome
+## Architecture
 
-Hey everyone!
+```text
+Developer
+    │
+    ▼
+ GitHub Repository
+    │
+    ▼
+ GitHub Actions CI/CD
+    │
+    ▼
+ Docker Registry
+    │
+    ▼
+ ArgoCD (GitOps)
+    │
+    ▼
+ AWS EKS Cluster
+    │
+ ┌──┴─────────────┐
+ ▼                ▼
+Prometheus    Fluent Bit
+ ▼                ▼
+Grafana      CloudWatch
+      \        /
+       \      /
+        ▼    ▼
+     AWS Lambda
+           │
+           ▼
+    AWS Bedrock Agent
+           │
+           ▼
+      Kira Dashboard
+           │
+           ▼
+ Root Cause Analysis
+```
 
-Welcome to my DevOps + AI series where we build an end-to-end DevOps project with an AIOps integration.
+---
 
-A lot of you have been asking: *"when are you going to share a full DevOps project?"*
+## Implementation Highlights
 
-Well — here we are.
+### 🚀 Automated Application Delivery
 
-In this series we will:
+**Implemented** a CI/CD pipeline to automate application build and deployment workflows.
 
-- Build microservices locally
-- Use Claude and AI tools to assist development
-- Deploy everything step by step
-- Migrate the system to the cloud on AWS EKS
-- Set up a full CI/CD pipeline with GitHub Actions
-- Implement GitOps workflows with ArgoCD
-- Integrate AIOps capabilities with AWS Bedrock
+**Tech Stack:** GitHub Actions, Docker
 
-By the end of this series, you won't just know tools — you'll understand how real DevOps systems are designed and deployed.
+**Outcome:** Enabled automated image creation and deployment workflows triggered by Git commits.
+
+---
+
+### ☸️ Deployed Cloud-Native Workloads
+
+**Provisioned** and configured a Kubernetes environment for container orchestration.
+
+**Tech Stack:** AWS EKS, Kubernetes, Docker
+
+**Outcome:** Successfully deployed and managed microservices in a scalable cloud-native environment.
+
+---
+
+### 🔄 Adopted GitOps Practices
+
+**Configured** GitOps-based deployment workflows to manage cluster state through Git.
+
+**Tech Stack:** ArgoCD, Kustomize, Kubernetes
+
+**Outcome:** Established version-controlled deployments and minimized configuration drift.
+
+---
+
+### 📊 Established Observability
+
+**Integrated** monitoring and visualization capabilities for infrastructure and application health.
+
+**Tech Stack:** Prometheus, Grafana
+
+**Outcome:** Achieved real-time visibility into cluster performance, resource utilization, and service availability.
+
+---
+
+### 📝 Centralized Logging
+
+**Implemented** centralized log collection and aggregation across Kubernetes workloads.
+
+**Tech Stack:** Fluent Bit, AWS CloudWatch
+
+**Outcome:** Enabled persistent, searchable logs enriched with Kubernetes metadata for faster troubleshooting.
+
+---
+
+### 🤖 Built an AI-Assisted Incident Analysis Workflow
+
+**Integrated** AI-powered operational analysis using AWS Bedrock Agents and Lambda Action Groups.
+
+**Tech Stack:** AWS Bedrock, AWS Lambda, CloudWatch, Python
+
+**Outcome:** Enabled automated Root Cause Analysis (RCA) using live infrastructure logs and operational telemetry.
+
+---
+
+### 💬 Developed an Operations Dashboard
+
+**Built** a conversational interface for infrastructure troubleshooting.
+
+**Tech Stack:** Streamlit, Boto3, AWS Bedrock
+
+**Outcome:** Enabled natural-language investigation of platform incidents and operational issues.
+
+---
+
+### 🔥 Validated Incident Response Workflows
+
+**Simulated** service failures within the Kubernetes environment.
+
+**Tech Stack:** Kubernetes, CloudWatch, Prometheus, AWS Bedrock
+
+**Outcome:** Successfully identified failures and generated AI-assisted Root Cause Analysis using real operational data.
+
+---
+
+## End-to-End Workflow
+
+### 1. Source Control
+
+Developers push code changes to GitHub.
+
+### 2. Continuous Integration
+
+GitHub Actions automatically:
+
+* Builds application artifacts
+* Builds Docker images
+* Pushes images to the container registry
+
+### 3. GitOps Deployment
+
+ArgoCD monitors Git repositories and synchronizes Kubernetes manifests with the EKS cluster.
+
+### 4. Container Orchestration
+
+AWS EKS manages:
+
+* Deployments
+* Services
+* Scaling
+* Rolling updates
+
+### 5. Monitoring & Observability
+
+Prometheus collects metrics from:
+
+* Nodes
+* Pods
+* Services
+* Kubernetes resources
+
+Grafana visualizes operational health through dashboards.
+
+### 6. Centralized Logging
+
+Fluent Bit runs as a DaemonSet and:
+
+* Collects container logs
+* Enriches logs with Kubernetes metadata
+* Ships logs to AWS CloudWatch
+
+### 7. AIOps Workflow
+
+When a user submits an operational question:
+
+1. Kira (Streamlit) sends the request to AWS Bedrock Agent.
+2. Bedrock determines what operational data is required.
+3. Lambda Action Groups retrieve logs and metrics.
+4. CloudWatch and monitoring data are analyzed.
+5. Bedrock generates a Root Cause Analysis (RCA).
+6. Results are returned through the dashboard.
+
+---
+
+## Why These Technologies?
+
+### AWS EKS
+
+Managed Kubernetes platform used to deploy and orchestrate microservices while reducing cluster management overhead.
+
+### ArgoCD
+
+Provides GitOps-based deployments where Git serves as the single source of truth for Kubernetes resources.
+
+### Prometheus
+
+Collects real-time infrastructure and application metrics for monitoring and alerting.
+
+### Grafana
+
+Visualizes metrics through dashboards that simplify operational analysis.
+
+### Fluent Bit
+
+Chosen for its lightweight footprint, Kubernetes-native design, metadata enrichment capabilities, and seamless integration with AWS CloudWatch.
+
+### AWS CloudWatch
+
+Provides centralized storage and search capabilities for operational logs.
+
+### AWS Bedrock
+
+Enables AI-powered reasoning and orchestration for operational investigations.
+
+### AWS Lambda
+
+Acts as the execution layer, allowing Bedrock Agents to retrieve live infrastructure data.
+
+### Streamlit
+
+Provides a lightweight interface for interacting with the AIOps workflow.
+
+---
+
+## Failure Simulation & Validation
+
+To validate the AIOps workflow, a critical Kubernetes deployment was intentionally scaled to zero replicas.
+
+The system successfully:
+
+* Retrieved logs from CloudWatch
+* Analyzed infrastructure telemetry
+* Correlated service failures with unavailable pods
+* Generated an automated Root Cause Analysis (RCA)
+
+This demonstrated how observability and AI can be combined to assist operational troubleshooting.
 
 ---
 
 ## Repository Structure
 
-```
-DevOps-Practice-Guide/
+```text
+.
 ├── docs/
-│   ├── part1-system-design.md     # System design foundations (Part 1)
-│   ├── part2-workflow.md          # Full workflow with AIOps (Part 2)
-│   └── claude-setup.md            # Claude Code + MCP server setup
+│   ├── part1-system-design.md
+│   ├── part2-workflow.md
+│   └── claude-setup.md
+│
 ├── projects/
-│   ├── README.md                  # EKS deployment guide (Part 3)
-│   ├── boutique-microservices/    # The application (7 services)
-│   ├── Infrastructure/            # Terraform for AWS provisioning
-│   └── aiops-assistant/           # Bedrock Agent — Kira (Part 4)
+│   ├── boutique-microservices/
+│   ├── Infrastructure/
+│   └── aiops-assistant/
+│
 ├── gitops/
-│   ├── argo-cd.yml                # ArgoCD Application manifest
-│   ├── kustomization.yml          # Kustomize entry point
-│   └── k8s/                       # All Kubernetes manifests
+│   ├── argo-cd.yml
+│   ├── kustomization.yml
+│   └── k8s/
+│
+├── docs/screenshots/
+│
 └── .github/
-    └── workflows/ci.yml           # GitHub Actions CI pipeline
+    └── workflows/
 ```
 
 ---
 
-## Series Structure
+## Screenshots
 
-### Claude Setup — AI Assistant Configuration
-[`docs/claude-setup.md`](docs/claude-setup.md)
+Add screenshots demonstrating:
 
-Before jumping into the project, this step walks through how Claude Code is configured as the AI assistant throughout this series.
-
-Three things are set up:
-
-**CLAUDE.md** — a project instruction file at the repo root that Claude reads automatically at the start of every session. It puts Claude in safe execution mode: explain what you're about to do and why before taking any action. This is important when working with live AWS infrastructure where silent commands can have real consequences.
-
-**MCP Servers** — background processes that extend Claude's built-in capabilities. Four servers are configured in `~/.claude/settings.json`:
-
-| Server | What it unlocks |
-|--------|----------------|
-| `awslabs.eks-mcp-server` | Query EKS clusters, inspect pods, stream logs, apply manifests |
-| `awslabs.terraform-mcp-server` | Run Terraform commands, search provider docs, run Checkov scans |
-| `awslabs.aws-pricing-mcp-server` | Live AWS pricing lookups and cost analysis reports |
-| `awslabs.core-mcp-server` | MCP orchestration layer (deprecated, kept for compatibility) |
-
-**Skills** — domain-specific knowledge packs that improve how Claude reasons about certain topics. The `terraform-skill` is installed, giving Claude deeper context for Terraform module patterns, testing strategies, security scanning, and CI/CD workflows specific to infrastructure-as-code.
+* AWS EKS Cluster
+* GitHub Actions Pipeline Success
+* ArgoCD Synchronization
+* Kubernetes Workloads
+* Prometheus Targets
+* Grafana Dashboards
+* CloudWatch Logs
+* AWS Bedrock Agent Configuration
+* Kira Dashboard
+* Root Cause Analysis Output
 
 ---
 
-### Part 1 — System Design Foundations
-[`docs/part1-system-design.md`](docs/part1-system-design.md)
+## Technology Stack
 
-We start with system design concepts specifically for cloud and DevOps. This is important whether you're a beginner, intermediate, or senior engineer — because companies don't choose tools randomly. They think about architecture patterns, deployment strategies, scalability, reliability, and cost tradeoffs.
-
-We cover 12 core system design pillars used in modern DevOps architectures, and connect each one directly to something running in this project.
-
----
-
-### Part 2 — Understanding the Workflow
-[`docs/part2-workflow.md`](docs/part2-workflow.md)
-
-Before writing any code or deployment configs, you need to understand how the entire system flows:
-
-- What services we're building and how they communicate
-- How the pipeline works
-- How code moves from developer → CI → deployment → production → AIOps
-
-This is where the full picture comes together — including how AI fits into the workflow.
+| Category                | Technology                 |
+| ----------------------- | -------------------------- |
+| Cloud Platform          | AWS                        |
+| Containerization        | Docker                     |
+| Container Orchestration | Kubernetes (EKS)           |
+| Infrastructure as Code  | Terraform                  |
+| CI/CD                   | GitHub Actions             |
+| GitOps                  | ArgoCD, Kustomize          |
+| Monitoring              | Prometheus                 |
+| Visualization           | Grafana                    |
+| Logging                 | Fluent Bit, AWS CloudWatch |
+| AIOps                   | AWS Bedrock Agents         |
+| Serverless              | AWS Lambda                 |
+| Frontend                | Streamlit                  |
+| Programming Language    | Python                     |
 
 ---
 
-### Part 3 — DevOps Project Implementation
-[`projects/README.md`](projects/README.md)
+## Key Learnings
 
-Then we actually build the project. You'll see:
+Through this project, I gained hands-on experience with:
 
-- Docker containers and Docker Compose
-- Kubernetes deployments on EKS
-- CI/CD pipelines with GitHub Actions
-- GitOps automation with ArgoCD
-- Infrastructure provisioning with Terraform
-- Observability with Prometheus and Grafana
-
----
-
-### Part 4 — AIOps Integration
-[`projects/aiops-assistant/README.md`](projects/aiops-assistant/README.md)
-
-Finally, we explore how AI helps with:
-
-- Monitoring and anomaly detection
-- Log analysis at scale
-- Incident response automation
-- DevOps troubleshooting
-
-Because modern DevOps is no longer just automation — it's **automation + intelligence**.
+* Kubernetes administration and deployments
+* Cloud-native application delivery
+* GitOps workflows
+* Infrastructure automation with Terraform
+* Monitoring and observability practices
+* Centralized logging architectures
+* AWS cloud services integration
+* AI-assisted incident investigation
+* Platform Engineering fundamentals
+* End-to-end DevOps lifecycle management
 
 ---
 
-## Bonus Challenge
+## Acknowledgements
 
-You'll get access to this entire repository.
+This project was implemented as a hands-on learning project based on the DevOps + AIOps series created by Vishakha Sadwani.
 
-But there's a catch.
-
-The repository includes **intentional issues and troubleshooting tasks**.
-
-Why? Because AI has made things easier. But if you want to grow as an engineer, you must learn how to break systems, debug systems, and fix systems.
-
-Once you implement the project:
-
-1. Fork the repository
-2. Deploy the system
-3. Troubleshoot the issues
-4. Share what you learned — and tag me so I know you're building along
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Application | React, Node.js, PostgreSQL |
-| Containers | Docker, Docker Compose |
-| Orchestration | Kubernetes (AWS EKS) |
-| Infrastructure | Terraform |
-| CI/CD | GitHub Actions |
-| GitOps | ArgoCD + Kustomize |
-| Monitoring | Prometheus + Grafana |
-| Log Forwarding | AWS Fluent Bit → CloudWatch |
-| AIOps | AWS Bedrock Agent (Kira) |
-| AI Assistant | Claude Code + MCP Servers |
+The original series provided architectural guidance and learning resources. My focus was on deploying, configuring, testing, troubleshooting, documenting, and understanding the complete workflow while gaining practical experience with modern DevOps, Cloud, and AIOps technologies.
