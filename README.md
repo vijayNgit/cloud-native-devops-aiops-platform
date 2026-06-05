@@ -4,6 +4,10 @@
 
 This repository contains my implementation of an end-to-end DevOps and AIOps platform deployed on AWS EKS.
 
+The project deploys a 7-tier cloud-native microservices application on AWS EKS and demonstrates the complete lifecycle of modern platform engineering:
+
+CI/CD → GitOps → Kubernetes → Observability → Centralized Logging → AIOps
+
 The project demonstrates how modern cloud-native applications move from source code to production through automated CI/CD pipelines, GitOps workflows, observability tooling, centralized logging, and AI-assisted incident diagnosis.
 
 The implementation was completed as a hands-on learning project under the guidance of Vishakha Sadwani. I deployed, configured, tested, troubleshot, and documented the complete workflow in my own AWS environment to gain practical experience with modern DevOps, Cloud, Platform Engineering, and AIOps practices.
