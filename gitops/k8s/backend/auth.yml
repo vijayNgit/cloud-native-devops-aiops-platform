@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  namespace: boutique
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: 406617775812.dkr.ecr.us-east-1.amazonaws.com/auth:c604d9319548f090658bfd7516c2444d3284ef67
+          ports:
+            - containerPort: 3002
+          env:
+            - name: NODE_ENV
+              value: development
+            - name: PORT
+              value: "3002"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: boutique-secrets
+                  key: AUTH_DB_URL
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+  namespace: boutique
+spec:
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 3002
+      targetPort: 3002
+  type: ClusterIP
